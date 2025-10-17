@@ -1,97 +1,68 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mon compte – Re:Zero</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/crysta.css">
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Mon compte — Re:Zero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/zero.css">
 </head>
-<body>
-  <div class="wrap">
+<body class="zero" data-skin="amber">
+  <div class="container">
+    <section class="hero">
+      <h1 class="h-hero" style="font-size:3rem;margin:0">MON COMPTE</h1>
+      <p class="h-sub" style="margin-top:8px">PROFIL • NIVEAU • PERSONNAGES</p>
+    </section>
 
-    <!-- Barre de navigation -->
-    <div class="topbar">
-      <div class="brand">Re:Zero – Mon compte</div>
-      <div class="nav">
-        <a href="index.html">Subaru</a>
-        <a href="emilia.html">Emilia</a>
-        <a href="rem.html">Rem</a>
-        <a href="create.html"><b>Créer</b></a>
-        <button id="btn-logout" class="ghost">Se déconnecter</button>
-      </div>
-    </div>
-
-    <div class="grid">
-      <!-- Profil -->
+    <div class="grid-2" style="margin-top:16px">
       <section class="card">
         <div class="hd">Mon profil</div>
         <div class="bd">
-          <form id="form-profile" autocomplete="on">
+          <form id="form-profile">
             <div class="row">
-              <div>
-                <label>Nom affiché</label>
-                <input name="display_name" placeholder="Ex: Shams" />
-              </div>
-              <div>
-                <label>@username (unique)</label>
-                <input name="username" placeholder="Ex: capitaineshams" />
-              </div>
+              <input class="input" name="display_name" placeholder="Nom affiché"/>
+              <input class="input" name="username" placeholder="@username (unique)"/>
             </div>
-            <div class="row">
-              <div>
-                <label>Niveau</label>
-                <input name="level" type="number" min="1" value="1" />
-              </div>
-              <div>
-                <label>Avatar (URL, optionnel)</label>
-                <input name="avatar_url" placeholder="https://..." />
-              </div>
+            <div class="row" style="margin-top:10px">
+              <input class="input" name="level" type="number" min="1" value="1"/>
+              <input class="input" name="avatar_url" placeholder="Avatar (URL)"/>
             </div>
-            <div>
-              <label>Bio</label>
-              <textarea name="bio" placeholder="Dis quelque chose sur toi..."></textarea>
+            <textarea class="input" name="bio" placeholder="Bio" style="margin-top:10px;min-height:90px"></textarea>
+
+            <div style="display:flex;gap:10px;align-items:center;margin-top:12px">
+              <button class="btn" type="submit">Enregistrer</button>
+              <a id="public-link" class="badge" href="#" target="_blank" style="display:none">Voir mon profil public</a>
+              <span id="msg-prof-ok" class="meta" style="color:#9cffcb"></span>
+              <span id="msg-prof-err" class="meta" style="color:#ff8aa8"></span>
             </div>
 
-            <div class="btns" style="margin-top:10px">
-              <button type="submit">Enregistrer le profil</button>
-              <a id="public-link" class="badge" href="#" target="_blank" style="display:none">Voir mon profil public</a>
-            </div>
-            <div id="msg-prof-ok" class="ok"></div>
-            <div id="msg-prof-err" class="err"></div>
-            <p class="muted" style="margin-top:8px">Astuce : choisis un @username. Ta page publique sera accessible via <code>user.html?u=@username</code>.</p>
+            <!-- Upload avatar (optionnel, compatible policy Storage si activée) -->
+            <input type="file" id="avatarFile" accept="image/*" style="margin-top:10px">
           </form>
         </div>
       </section>
 
-      <!-- Personnages de l'utilisateur -->
       <section class="card">
         <div class="hd">Mes personnages</div>
         <div class="bd">
-          <div class="list-head">
-            <div class="muted">Publie depuis <a href="create.html">Créer</a>. Clique sur “Voir” pour la page publique.</div>
-            <a class="badge" href="create.html">+ Nouveau</a>
-          </div>
-          <div id="my-chars"></div>
-          <div id="msg-chars" class="err"></div>
+          <div class="meta">Publie depuis <a href="create.html">Créer</a>. Clique sur “Voir”.</div>
+          <div id="my-chars" style="margin-top:10px"></div>
+          <p id="msg-chars" class="meta" style="color:#ff8aa8"></p>
         </div>
       </section>
     </div>
+    <div class="center" style="margin-top:12px">
+      <button id="btn-logout" class="btn ghost">Se déconnecter</button>
+    </div>
   </div>
 
-  <!-- 1) Librairie Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- 2) Ton client partagé -->
   <script src="js/config.js"></script>
+  <script src="js/nav.js"></script>
 
-  <!-- 3) Logique de la page Mon compte -->
   <script>
   (async function(){
-    // 1) Exiger une session (redirige vers login si besoin)
     const user = await getUserOrRedirect();
 
-    // 2) Charger profil
     const form = document.getElementById('form-profile');
     const okBox = document.getElementById('msg-prof-ok');
     const errBox = document.getElementById('msg-prof-err');
@@ -105,105 +76,79 @@
       form.level.value        = p.level || 1;
       form.avatar_url.value   = p.avatar_url || '';
       form.bio.value          = p.bio || '';
-
-      if (p.username) {
-        publicLink.style.display = 'inline-block';
-        publicLink.href = 'user.html?u=' + encodeURIComponent(p.username);
-      }
+      if (p.username) { publicLink.style.display='inline-block'; publicLink.href='user.html?u='+encodeURIComponent(p.username); }
     }
 
-    // 3) Sauvegarder profil (avec vérif @username unique)
     form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      okBox.textContent = ''; errBox.textContent = '';
-
+      e.preventDefault(); okBox.textContent=''; errBox.textContent='';
       const payload = {
         id: user.id,
         display_name: form.display_name.value.trim() || null,
         username: form.username.value.trim() || null,
-        level: parseInt(form.level.value || '1', 10),
+        level: parseInt(form.level.value || '1',10),
         avatar_url: form.avatar_url.value.trim() || null,
         bio: form.bio.value.trim() || null
       };
-
-      // Vérifier l'unicité du username si défini
-      if (payload.username) {
-        const { data: exist, error: e1 } = await sb
-          .from('profiles').select('id').eq('username', payload.username).neq('id', user.id).maybeSingle();
-        if (e1) { errBox.textContent = e1.message; return; }
-        if (exist) { errBox.textContent = "Ce @username est déjà pris."; return; }
+      if (payload.username){
+        const { data: exist, error: e1 } = await sb.from('profiles').select('id').eq('username', payload.username).neq('id', user.id).maybeSingle();
+        if (e1){ errBox.textContent = e1.message; return; }
+        if (exist){ errBox.textContent = "Ce @username est déjà pris."; return; }
       }
-
       const { error } = await sb.from('profiles').upsert(payload);
-      if (error) { errBox.textContent = error.message; return; }
-
+      if (error){ errBox.textContent = error.message; return; }
       okBox.textContent = 'Profil sauvegardé ✅';
-      if (payload.username) {
-        publicLink.style.display = 'inline-block';
-        publicLink.href = 'user.html?u=' + encodeURIComponent(payload.username);
-      }
+      if (payload.username){ publicLink.style.display='inline-block'; publicLink.href='user.html?u='+encodeURIComponent(payload.username); }
     });
 
-    // 4) Lister mes personnages
-    async function loadMyChars(){
+    async function loadChars(){
       const box = document.getElementById('my-chars');
       const msg = document.getElementById('msg-chars');
-      box.innerHTML = ''; msg.textContent = '';
-
-      const { data: chars, error: cErr } = await sb
-        .from('characters')
-        .select('id,name,theme,published,created_at')
-        .eq('owner', user.id)
-        .order('created_at',{ascending:false});
-
-      if (cErr) { msg.textContent = cErr.message; return; }
-      if (!chars || !chars.length) {
-        box.innerHTML = '<div class="empty">Aucun personnage. Commence par <a href="create.html">en créer un</a>.</div>';
-        return;
-      }
-
+      box.innerHTML=''; msg.textContent='';
+      const { data: chars, error: cErr } = await sb.from('characters').select('*').eq('owner', user.id).order('created_at',{ascending:false});
+      if (cErr){ msg.textContent = cErr.message; return; }
+      if (!chars || !chars.length){ box.innerHTML='<div class="meta">Aucun personnage.</div>'; return; }
       box.innerHTML = chars.map(c => `
-        <div class="item">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <div class="card" style="margin-bottom:10px">
+          <div class="bd" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
             <div>
-              <div style="font-weight:700">${escapeHTML(c.name)}</div>
-              <div class="meta">Thème: ${escapeHTML(c.theme)} • ${c.published ? 'Publié' : 'Brouillon'} • ${new Date(c.created_at).toLocaleString()}</div>
+              <div style="font-weight:800">${escapeHTML(c.name)}</div>
+              <div class="meta">${new Date(c.created_at).toLocaleString()} • ${escapeHTML(c.theme)} • ${c.published?'Publié':'Brouillon'}</div>
             </div>
-            <div class="actions">
-              <a href="character.html?id=${c.id}" class="badge">Voir</a>
-              <button class="ghost" data-del="${c.id}">Supprimer</button>
+            <div style="display:flex;gap:8px">
+              <a class="btn ghost" href="character.html?id=${c.id}">Voir</a>
+              <button class="btn ghost" data-del="${c.id}">Supprimer</button>
             </div>
           </div>
         </div>
       `).join('');
-
-      // Attach delete events
       box.querySelectorAll('[data-del]').forEach(btn=>{
         btn.addEventListener('click', async ()=>{
           if (!confirm('Supprimer ce personnage ?')) return;
           await sb.from('characters').delete().eq('id', btn.dataset.del);
-          loadMyChars();
+          loadChars();
         });
       });
     }
-    await loadMyChars();
+    await loadChars();
 
-    // 5) Logout
     document.getElementById('btn-logout').addEventListener('click', async ()=>{
-      await sb.auth.signOut();
-      location.href = 'login.html';
+      await sb.auth.signOut(); location.href='login.html';
     });
 
-    // Utils
-    function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;" }[m])); }
+    // Optional avatar upload if Storage policies sont en place
+    const fileInput = document.getElementById('avatarFile');
+    fileInput?.addEventListener('change', async ()=>{
+      const f = fileInput.files?.[0]; if(!f) return;
+      const ext = f.name.split('.').pop()?.toLowerCase() || 'jpg';
+      const path = `${user.id}/avatar.${ext}`;
+      await sb.storage.from('avatars').upload(path, f, { upsert:true, contentType:f.type });
+      const { data } = sb.storage.from('avatars').getPublicUrl(path);
+      await sb.from('profiles').update({ avatar_url: data.publicUrl }).eq('id', user.id);
+      location.reload();
+    });
+
+    function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;","&gt;":"&gt;","\"":"&quot;","'":"&#039;" }[m])); }
   })();
   </script>
-<body class="theme-crysta">
 </body>
-<!-- Librairie Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- Ton client partagé -->
-<script src="js/config.js"></script>
-<!-- Navigation dynamique -->
-<script src="js/nav.js"></script>
 </html>

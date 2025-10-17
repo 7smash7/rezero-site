@@ -1,395 +1,104 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Connexion / Inscription — Re:Zero</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0b0f18 0%, #141a2e 50%, #0b0f18 100%);
-      color: #e9eefc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Effet de fond animé */
-    body::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(124, 154, 255, 0.1) 0%, transparent 50%);
-      animation: rotate 20s linear infinite;
-    }
-
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 900px;
-    }
-
-    .card {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      background: linear-gradient(135deg, rgba(18, 24, 41, 0.95), rgba(15, 20, 36, 0.95));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-      animation: fadeIn 0.8s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .section {
-      padding: 40px;
-      position: relative;
-    }
-
-    .left {
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .right {
-      background: linear-gradient(180deg, rgba(124, 154, 255, 0.08), transparent);
-    }
-
-    h1 {
-      font-family: 'Cinzel', serif;
-      margin: 0 0 12px;
-      font-size: 26px;
-      letter-spacing: 0.5px;
-      background: linear-gradient(135deg, #ff6b6b, #8a67ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .sub {
-      margin: 0 0 28px;
-      color: #9aa4c7;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    label {
-      font-size: 13px;
-      color: #9aa4c7;
-      font-weight: 600;
-      margin-bottom: 6px;
-      display: block;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.05);
-      color: #e9eefc;
-      outline: none;
-      font-size: 15px;
-      transition: all 0.3s ease;
-    }
-
-    input:focus {
-      border-color: rgba(124, 154, 255, 0.5);
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 0 20px rgba(124, 154, 255, 0.2);
-    }
-
-    input::placeholder {
-      color: #6c7396;
-    }
-
-    button {
-      padding: 14px 18px;
-      border-radius: 12px;
-      border: 1px solid rgba(124, 154, 255, 0.4);
-      background: linear-gradient(135deg, #7c9aff, #8a67ff);
-      color: #0b0f18;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 6px 20px rgba(124, 154, 255, 0.3);
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(124, 154, 255, 0.5);
-    }
-
-    button.secondary {
-      background: transparent;
-      color: #e9eefc;
-      border-color: rgba(255, 255, 255, 0.2);
-      box-shadow: none;
-    }
-
-    button.secondary:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .err {
-      color: #ff6b6b;
-      font-size: 13px;
-      min-height: 20px;
-      padding: 8px;
-      background: rgba(255, 107, 107, 0.1);
-      border-radius: 8px;
-      border-left: 3px solid #ff6b6b;
-    }
-
-    .ok {
-      color: #6ef3a5;
-      font-size: 13px;
-      min-height: 20px;
-      padding: 8px;
-      background: rgba(110, 243, 165, 0.1);
-      border-radius: 8px;
-      border-left: 3px solid #6ef3a5;
-    }
-
-    .hr {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-      margin: 24px 0;
-    }
-
-    .footer {
-      margin-top: 16px;
-      font-size: 12px;
-      color: #6c7396;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 860px) {
-      .card {
-        grid-template-columns: 1fr;
-      }
-
-      .left {
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      }
-
-      .section {
-        padding: 32px 24px;
-      }
-
-      .row {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 16px;
-      }
-
-      .section {
-        padding: 24px 20px;
-      }
-
-      h1 {
-        font-size: 22px;
-      }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/zero.css">
 </head>
-<body>
+<body class="zero" data-skin="magenta">
   <div class="container">
-    <div class="card">
+    <section class="hero">
+      <h1 class="h-hero" style="font-size:3.4rem;margin:0">REJOINS L’ÉPOPÉE</h1>
+      <p class="h-sub" style="margin-top:8px">CRÉE. PARTAGE. RÉINVENTE L’UNIVERS.</p>
+    </section>
+
+    <div class="grid-2" style="margin-top:16px">
       <!-- INSCRIPTION -->
-      <section class="section left">
-        <h1>Créer un compte</h1>
-        <p class="sub">Rejoins l'univers Re:Zero et crée tes personnages uniques.</p>
-
-        <form id="form-signup" autocomplete="on">
-          <div>
-            <label>Adresse email</label>
-            <input name="email" type="email" placeholder="ton@email.fr" required />
-          </div>
-          <div class="row">
-            <div>
-              <label>Mot de passe</label>
-              <input name="password" type="password" placeholder="••••••••" minlength="6" required />
+      <section class="card">
+        <div class="hd">Créer un compte</div>
+        <div class="bd">
+          <form id="form-signup">
+            <div class="row">
+              <input class="input" name="email" type="email" placeholder="Email" required>
+              <input class="input" name="password" type="password" placeholder="Mot de passe (min 6)" minlength="6" required>
             </div>
-            <div>
-              <label>Confirmation</label>
-              <input name="password2" type="password" placeholder="••••••••" minlength="6" required />
+            <input class="input" name="password2" type="password" placeholder="Confirmer le mot de passe" minlength="6" required style="margin-top:12px">
+            <div style="display:flex;gap:10px;margin-top:14px">
+              <button class="btn" type="submit">Créer mon compte</button>
+              <span id="ok-signup" class="meta" style="color:#9cffcb"></span>
             </div>
-          </div>
-          <button type="submit">Créer mon compte</button>
-          <div id="msg-signup" class="err" style="display: none;"></div>
-          <div id="ok-signup" class="ok" style="display: none;"></div>
-        </form>
-
-        <div class="hr"></div>
-        <div class="footer">💡 Astuce : tu pourras définir ton @username dans "Mon compte" après inscription.</div>
+            <div id="msg-signup" class="meta" style="color:#ff8aa8;margin-top:6px"></div>
+          </form>
+        </div>
       </section>
 
       <!-- CONNEXION -->
-      <section class="section right">
-        <h1>Se connecter</h1>
-        <p class="sub">Déjà membre ? Accède à ton espace personnel.</p>
-
-        <form id="form-signin" autocomplete="on">
-          <div>
-            <label>Adresse email</label>
-            <input name="email" type="email" placeholder="ton@email.fr" required />
-          </div>
-          <div>
-            <label>Mot de passe</label>
-            <input name="password" type="password" placeholder="••••••••" minlength="6" required />
-          </div>
-          <button type="submit">Connexion</button>
-          <button type="button" id="btn-magic" class="secondary">✨ Lien magique</button>
-          <div id="msg-signin" class="err" style="display: none;"></div>
-          <div id="ok-signin" class="ok" style="display: none;"></div>
-        </form>
-
-        <div class="hr"></div>
-        <div class="footer">🔒 Connexion sécurisée. Vérifie que ton navigateur autorise les pop-ups.</div>
+      <section class="card">
+        <div class="hd">Se connecter</div>
+        <div class="bd">
+          <form id="form-signin">
+            <div class="row">
+              <input class="input" name="email" type="email" placeholder="Email" required>
+              <input class="input" name="password" type="password" placeholder="Mot de passe" required>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+              <button class="btn" type="submit">Connexion</button>
+              <button class="btn ghost" type="button" id="btn-magic">Lien magique</button>
+              <span id="ok-signin" class="meta" style="color:#9cffcb"></span>
+            </div>
+            <div id="msg-signin" class="meta" style="color:#ff8aa8;margin-top:6px"></div>
+          </form>
+        </div>
       </section>
     </div>
   </div>
 
+  <!-- Supabase + client + nav -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
+  <script src="js/nav.js"></script>
 
+  <!-- Logique existante -->
   <script>
-    // Inscription
     document.getElementById('form-signup').addEventListener('submit', async (e) => {
       e.preventDefault();
       const msgErr = document.getElementById('msg-signup');
-      const msgOk = document.getElementById('ok-signup');
-      msgErr.textContent = ""; msgErr.style.display = "none";
-      msgOk.textContent = ""; msgOk.style.display = "none";
-
+      const msgOk  = document.getElementById('ok-signup');
+      msgErr.textContent = ""; msgOk.textContent = "";
       const email = e.target.email.value.trim();
       const p1 = e.target.password.value.trim();
       const p2 = e.target.password2.value.trim();
-
-      if (p1 !== p2) {
-        msgErr.textContent = "❌ Les mots de passe ne correspondent pas.";
-        msgErr.style.display = "block";
-        return;
-      }
-
+      if (p1 !== p2) { msgErr.textContent = "Les mots de passe ne correspondent pas."; return; }
       const { data, error } = await sb.auth.signUp({ email, password: p1 });
-      if (error) {
-        msgErr.textContent = "❌ " + error.message;
-        msgErr.style.display = "block";
-        return;
-      }
-
-      const user = data.user;
-      if (user) {
-        await sb.from('profiles').upsert({ id: user.id, level: 1 });
-      }
-
-      msgOk.textContent = "✅ Compte créé avec succès ! Redirection...";
-      msgOk.style.display = "block";
-      setTimeout(() => { location.href = "account.html"; }, 800);
+      if (error) { msgErr.textContent = error.message; return; }
+      const user = data.user; if (user) await sb.from('profiles').upsert({ id: user.id, level: 1 });
+      msgOk.textContent = "Compte créé ✅ — redirection…";
+      setTimeout(()=>{ location.href = "account.html"; }, 600);
     });
 
-    // Connexion
     document.getElementById('form-signin').addEventListener('submit', async (e) => {
       e.preventDefault();
       const msgErr = document.getElementById('msg-signin');
-      const msgOk = document.getElementById('ok-signin');
-      msgErr.textContent = ""; msgErr.style.display = "none";
-      msgOk.textContent = ""; msgOk.style.display = "none";
-
+      const msgOk  = document.getElementById('ok-signin');
+      msgErr.textContent = ""; msgOk.textContent = "";
       const email = e.target.email.value.trim();
       const password = e.target.password.value.trim();
-
       const { error } = await sb.auth.signInWithPassword({ email, password });
-      if (error) {
-        msgErr.textContent = "❌ " + error.message;
-        msgErr.style.display = "block";
-        return;
-      }
-
-      msgOk.textContent = "✅ Connexion réussie ! Redirection...";
-      msgOk.style.display = "block";
-      setTimeout(() => { location.href = "account.html"; }, 800);
+      if (error) { msgErr.textContent = error.message; return; }
+      msgOk.textContent = "Connexion réussie ✅ — redirection…";
+      setTimeout(()=>{ location.href = "account.html"; }, 600);
     });
 
-    // Lien magique
     document.getElementById('btn-magic').addEventListener('click', async () => {
-      const emailInput = document.querySelector('#form-signin input[name="email"]');
-      const email = (emailInput?.value || "").trim();
-      const box = document.getElementById('ok-signin');
-      const err = document.getElementById('msg-signin');
-      box.textContent = ""; box.style.display = "none";
-      err.textContent = ""; err.style.display = "none";
-
-      if (!email) {
-        err.textContent = "❌ Entre ton email pour recevoir un lien magique.";
-        err.style.display = "block";
-        return;
-      }
-
+      const email = (document.querySelector('#form-signin input[name="email"]')?.value || "").trim();
+      const ok = document.getElementById('ok-signin'); const err = document.getElementById('msg-signin');
+      ok.textContent=""; err.textContent="";
+      if (!email) { err.textContent = "Entre ton email pour recevoir un lien."; return; }
       const { error } = await sb.auth.signInWithOtp({ email });
-      if (error) {
-        err.textContent = "❌ " + error.message;
-        err.style.display = "block";
-        return;
-      }
-
-      box.textContent = "✅ Lien magique envoyé ! Vérifie ta boîte mail.";
-      box.style.display = "block";
+      if (error) { err.textContent = error.message; return; }
+      ok.textContent = "Lien magique envoyé ✅ (vérifie ta boîte mail)";
     });
   </script>
 </body>

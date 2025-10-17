@@ -1,382 +1,131 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Créer ton personnage – Re:Zero</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      /* Thème par défaut (Subaru sombre/rouge) */
-      --bg1:#0a0a0a; --bg2:#1a1a2e; --bg3:#16213e;
-      --t-accent:#ff6b6b; --t-accent-soft:#c44569; --txt:#e8e8e8; --muted:#a8a8a8;
-      --panel:rgba(255,255,255,0.05); --panel-brd:rgba(196, 69, 105, 0.3);
-      --shadow:rgba(196, 69, 105, 0.3);
-    }
-    [data-theme="emilia"]{
-      --bg1:#f8f9ff; --bg2:#e8e9ff; --bg3:#dfe3ff;
-      --t-accent:#8a67ff; --t-accent-soft:#b794f6; --txt:#2d2d2d; --muted:#7a7a7a;
-      --panel:#ffffff; --panel-brd:rgba(138,103,255,.2);
-      --shadow:rgba(138,103,255,.15);
-    }
-    [data-theme="rem"]{
-      --bg1:#0a1428; --bg2:#1a2942; --bg3:#2d4a7c;
-      --t-accent:#64b5f6; --t-accent-soft:#90caf9; --txt:#e8f4ff; --muted:#90caf9;
-      --panel:rgba(100,181,246,.08); --panel-brd:rgba(100,181,246,.35);
-      --shadow:rgba(100,181,246,.25);
-    }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:'Noto Sans JP',sans-serif;
-      background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 50%,var(--bg3) 100%);
-      color:var(--txt);
-      overflow-x:hidden;
-    }
-    /* NAV */
-    .nav{position:fixed;top:0;width:100%;background:rgba(0,0,0,.25);backdrop-filter:blur(10px);
-      padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;
-      box-shadow:0 2px 20px var(--shadow);z-index:1000}
-    .nav-logo{font-family:'Cinzel',serif;font-weight:700;font-size:1.5rem;color:var(--t-accent)}
-    .nav-links{display:flex;gap:1.25rem;list-style:none}
-    .nav-links a{text-decoration:none;color:var(--t-accent);padding:.5rem 1rem;border-radius:6px;transition:.25s}
-    .nav-links a:hover{background:rgba(255,255,255,.06)}
-    .hero{margin-top:64px;display:flex;align-items:center;justify-content:center;height:40vh;
-      background:radial-gradient(ellipse at center, rgba(255,255,255,.06) 0%, transparent 70%)}
-    .title{font-family:'Cinzel',serif;font-size:2.25rem;letter-spacing:.06em}
-    .container{max-width:1100px;margin:0 auto;padding:2rem}
-
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-    .card{background:var(--panel);border:1px solid var(--panel-brd);border-radius:14px;
-      box-shadow:0 8px 30px var(--shadow);padding:1.25rem}
-    .card h3{font-family:'Cinzel',serif;color:var(--t-accent);margin-bottom:.75rem}
-
-    label{font-size:.95rem;color:var(--muted)}
-    input,select,textarea{
-      width:100%;margin-top:.35rem;margin-bottom:.9rem;padding:.75rem .9rem;border-radius:10px;border:1px solid var(--panel-brd);
-      background:rgba(255,255,255,.04);color:var(--txt);outline:none
-    }
-    textarea{min-height:92px;resize:vertical}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-
-    .btns{display:flex;gap:.75rem;flex-wrap:wrap}
-    button{
-      padding:.75rem 1rem;border:1px solid var(--panel-brd);background:var(--panel);color:var(--txt);
-      border-radius:10px;cursor:pointer;transition:.25s
-    }
-    button:hover{transform:translateY(-2px);box-shadow:0 10px 30px var(--shadow)}
-    .section-title{font-family:'Cinzel',serif;color:var(--t-accent);text-align:center;margin:1.25rem 0}
-
-    /* Aperçu généré */
-    .preview .hero{height:auto;padding:2.5rem 1.25rem}
-    .preview .big{font-size:2.2rem;margin-bottom:.25rem}
-    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.75rem;margin-top:.5rem}
-    .stat{background:var(--panel);border:1px solid var(--panel-brd);border-radius:12px;padding:1rem;text-align:center}
-    table{width:100%;border-collapse:collapse;margin-top:1rem}
-    th,td{border-bottom:1px solid var(--panel-brd);padding:.7rem .8rem;text-align:left}
-    th{color:var(--t-accent)}
-    .muted{color:var(--muted)}
-    @media(max-width:900px){.grid{grid-template-columns:1fr}}
-  </style>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Créer un personnage — Re:Zero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/zero.css">
 </head>
-<body data-theme="subaru">
-  <nav class="nav">
-    <div class="nav-logo">Re:Zero</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Subaru</a></li>
-      <li><a href="emilia.html">Emilia</a></li>
-      <li><a href="rem.html">Rem</a></li>
-      <li><a href="create.html"><strong>Créer</strong></a></li>
-    </ul>
-  </nav>
+<body class="zero" data-skin="cyan">
+  <div class="container">
+    <section class="hero">
+      <h1 class="h-hero" style="font-size:3rem;margin:0">FORGE TON HÉROS</h1>
+      <p class="h-sub" style="margin-top:8px">NOM • THÈME • TRAITS • PARCOURS</p>
+    </section>
 
-  <header class="hero">
-    <h1 class="title">Créateur de personnage Re:Zero</h1>
-  </header>
-
-  <main class="container">
-    <div class="grid">
-      <!-- FORMULAIRE -->
+    <div class="grid-2" style="margin-top:16px">
       <section class="card">
-        <h3>Paramètres & Thème</h3>
-        <div class="row">
-          <div>
-            <label>Nom du personnage</label>
-            <input id="f-nom" placeholder="Ex: Akira"/>
-          </div>
-          <div>
-            <label>Âge</label>
-            <input id="f-age" type="number" min="1" placeholder="Ex: 18"/>
-          </div>
+        <div class="hd">Nouveau personnage</div>
+        <div class="bd">
+          <form id="form-char">
+            <div class="row">
+              <input class="input" name="name" placeholder="Nom" required>
+              <select class="input" name="theme">
+                <option value="subaru">Subaru (sombre/rouge)</option>
+                <option value="emilia">Emilia (clair/violet)</option>
+                <option value="rem">Rem (bleu/océan)</option>
+              </select>
+            </div>
+            <div class="row" style="margin-top:10px">
+              <input class="input" name="age" type="number" min="1" placeholder="Âge">
+              <select class="input" name="strength">
+                <option>★</option><option>★★</option><option>★★★</option><option>★★★★</option><option selected>★★★★★</option>
+              </select>
+            </div>
+            <div class="row" style="margin-top:10px">
+              <input class="input" name="race" placeholder="Race">
+              <input class="input" name="affiliation" placeholder="Affiliation">
+            </div>
+            <div class="row" style="margin-top:10px">
+              <input class="input" name="hair" placeholder="Cheveux">
+              <input class="input" name="eyes" placeholder="Yeux">
+            </div>
+            <div class="row" style="margin-top:10px">
+              <input class="input" name="weapon" placeholder="Arme">
+              <input class="input" name="magic" placeholder="Magie/Capacité">
+            </div>
+            <input class="input" name="trait" placeholder="Trait distinctif" style="margin-top:10px">
+            <textarea class="input" name="personality" placeholder="Personnalité" style="margin-top:10px;min-height:80px"></textarea>
+            <textarea class="input" name="timeline" placeholder="Parcours (1 ligne = 1 étape)" style="margin-top:10px;min-height:100px"></textarea>
+            <label class="meta" style="display:flex;align-items:center;gap:8px;margin-top:8px">
+              <input type="checkbox" name="published" checked> Publier immédiatement
+            </label>
+            <div style="display:flex;gap:10px;margin-top:12px">
+              <button class="btn" type="submit">Publier</button>
+              <a class="btn ghost" href="account.html">Annuler</a>
+              <span id="msg-ok" class="meta" style="color:#9cffcb"></span>
+              <span id="msg-err" class="meta" style="color:#ff8aa8"></span>
+            </div>
+          </form>
         </div>
-
-        <div class="row">
-          <div>
-            <label>Race</label>
-            <input id="f-race" placeholder="Humain, Demi-elfe, Oni…"/>
-          </div>
-          <div>
-            <label>Affiliation</label>
-            <input id="f-affiliation" placeholder="Manoir Roswaal, Guilde, etc."/>
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Couleur de cheveux</label>
-            <input id="f-cheveux" placeholder="Noir, argenté, bleu ciel…"/>
-          </div>
-          <div>
-            <label>Couleur des yeux</label>
-            <input id="f-yeux" placeholder="Gris, améthyste, bleu clair…"/>
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Arme principale</label>
-            <input id="f-arme" placeholder="Epée, Morning Star, magie, …"/>
-          </div>
-          <div>
-            <label>Magie/Capacité</label>
-            <input id="f-magie" placeholder="Glace, Eau (Al Huma), Shamac…"/>
-          </div>
-        </div>
-
-        <label>Traits distinctifs</label>
-        <input id="f-trait" placeholder="Ex: cicatrice à l’œil, corne d’oni, bandeau…"/>
-
-        <label>Personnalité (courte description)</label>
-        <textarea id="f-perso" placeholder="Déterminé·e, loyal·e, impulsif·ve…"></textarea>
-
-        <label>Parcours (timeline – 1 point par ligne)</label>
-        <textarea id="f-timeline" placeholder="Événement marquant #1&#10;Événement marquant #2"></textarea>
-
-        <div class="row">
-          <div>
-            <label>Puissance/Force (★ à ★★★★★)</label>
-            <select id="f-force">
-              <option>★</option><option>★★</option><option>★★★</option><option>★★★★</option><option selected>★★★★★</option>
-            </select>
-          </div>
-          <div>
-            <label>Thème visuel</label>
-            <select id="f-theme">
-              <option value="subaru" selected>Subaru – sombre / rouge</option>
-              <option value="emilia">Emilia – clair / violet</option>
-              <option value="rem">Rem – bleu / océan</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="btns">
-          <button id="btn-preview">Générer l’aperçu</button>
-          <button id="btn-save">Enregistrer dans le navigateur</button>
-          <button id="btn-export">Exporter en HTML</button>
-          <button id="btn-link">Lien partageable</button>
-          <button id="btn-clear" title="Effacer le formulaire">Effacer</button>
-        </div>
-        <p class="muted" style="margin-top:.5rem">
-          Tout est fait **côté navigateur** (localStorage). Pas de base de données, zéro coût.
-        </p>
       </section>
 
-      <!-- APERÇU -->
-      <section class="card preview" id="preview" aria-live="polite">
-        <h3>Aperçu</h3>
-        <div class="hero">
-          <div>
-            <div class="big" id="p-nom">Ton personnage</div>
-            <div class="muted" id="p-sub">世界へようこそ</div>
+      <section class="card">
+        <div class="hd">Aperçu</div>
+        <div class="bd">
+          <div class="grid-3">
+            <div class="card"><div class="bd"><div class="meta">Nom</div><div id="pv-name" style="font-weight:800">—</div></div></div>
+            <div class="card"><div class="bd"><div class="meta">Thème</div><div id="pv-theme" style="font-weight:800">subaru</div></div></div>
+            <div class="card"><div class="bd"><div class="meta">Force</div><div id="pv-strength" style="font-weight:800">★★★★★</div></div></div>
+          </div>
+          <div class="grid-3" style="margin-top:10px">
+            <div class="card"><div class="bd"><div class="meta">Race</div><div id="pv-race">—</div></div></div>
+            <div class="card"><div class="bd"><div class="meta">Affiliation</div><div id="pv-aff">—</div></div></div>
+            <div class="card"><div class="bd"><div class="meta">Âge</div><div id="pv-age">—</div></div></div>
+          </div>
+          <div class="grid-3" style="margin-top:10px">
+            <div class="card"><div class="bd"><div class="meta">Cheveux</div><div id="pv-hair">—</div></div></div>
+            <div class="card"><div class="bd"><div class="meta">Yeux</div><div id="pv-eyes">—</div></div></div>
+            <div class="card"><div class="bd"><div class="meta">Magie</div><div id="pv-magic">—</div></div></div>
+          </div>
+          <div class="card" style="margin-top:10px">
+            <div class="bd"><div class="meta">Parcours</div><div id="pv-steps" style="margin-top:6px">—</div></div>
           </div>
         </div>
-
-        <h4 class="section-title">Profil</h4>
-        <table>
-          <tbody id="p-table"></tbody>
-        </table>
-
-        <h4 class="section-title">Statistiques</h4>
-        <div class="stats">
-          <div class="stat"><div class="muted">Âge</div><div id="p-age">–</div></div>
-          <div class="stat"><div class="muted">Force</div><div id="p-force">–</div></div>
-          <div class="stat"><div class="muted">Magie</div><div id="p-magie">–</div></div>
-        </div>
-
-        <h4 class="section-title">Parcours</h4>
-        <div id="p-steps" class="timeline"></div>
       </section>
     </div>
+  </div>
 
-    <!-- LISTE LOCALE -->
-    <section class="card" style="margin-top:1rem">
-      <h3>Personnages enregistrés (localStorage)</h3>
-      <div class="btns" id="saved-list"></div>
-    </section>
-  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/nav.js"></script>
 
   <script>
-    const els = {
-      nom: f("f-nom"), age:f("f-age"), race:f("f-race"), aff:f("f-affiliation"),
-      cheveux:f("f-cheveux"), yeux:f("f-yeux"), arme:f("f-arme"), magie:f("f-magie"),
-      trait:f("f-trait"), perso:f("f-perso"), timeline:f("f-timeline"),
-      force:f("f-force"), theme:f("f-theme")
+  (async function(){
+    const user = await getUserOrRedirect();
+    const form = document.getElementById('form-char');
+    const bind=(name,id,tf=(v)=>v||'—')=>{
+      const el=form[name], out=document.getElementById(id);
+      const upd=()=>{ out.textContent=tf(el.value.trim()) }; ['input','change','keyup'].forEach(e=>el.addEventListener(e,upd)); upd();
     };
-    const out = {
-      root: document.body,
-      nom: f("p-nom"), sub:f("p-sub"), table:f("p-table"), age:f("p-age"),
-      force:f("p-force"), magie:f("p-magie"), steps:f("p-steps"),
-      saved: f("saved-list")
-    };
-    q("#btn-preview").onclick = render;
-    q("#btn-save").onclick = save;
-    q("#btn-export").onclick = exportHTML;
-    q("#btn-link").onclick = shareLink;
-    q("#btn-clear").onclick = () => { document.querySelectorAll("input,textarea").forEach(i=>i.value=""); };
+    bind('name','pv-name'); bind('theme','pv-theme'); bind('age','pv-age'); bind('race','pv-race');
+    bind('affiliation','pv-aff'); bind('hair','pv-hair'); bind('eyes','pv-eyes'); bind('weapon','pv-weapon');
+    bind('magic','pv-magic'); bind('trait','pv-trait'); bind('strength','pv-strength');
 
-    // Thème en live
-    els.theme.onchange = () => {
-      out.root.setAttribute("data-theme", els.theme.value);
-    };
+    const tl=form.timeline, out=document.getElementById('pv-steps');
+    const updTl=()=>{ const steps=(tl.value||'').split('\n').map(s=>s.trim()).filter(Boolean);
+      out.innerHTML = steps.length? steps.map(s=>`• ${escapeHTML(s)}`).join('<br>') : '—'; };
+    ['input','change','keyup'].forEach(e=>tl.addEventListener(e,updTl)); updTl();
 
-    // Si lien partageable
-    (function loadFromURL(){
-      const p = new URLSearchParams(location.search);
-      if(!p.size) return;
-      for(const [k,v] of p.entries()){
-        const el = f("f-"+k); if(el) el.value = decodeURIComponent(v);
-      }
-      if(p.get("theme")) out.root.setAttribute("data-theme", p.get("theme"));
-      render();
-    })();
-
-    // Charger la liste locale
-    drawSaved();
-
-    function render(){
-      out.root.setAttribute("data-theme", els.theme.value);
-      out.nom.textContent = valueOr(els.nom.value,"Ton personnage").toUpperCase();
-      out.sub.textContent = valueOr(els.perso.value,"Décris sa personnalité en quelques lignes.");
-
-      // Table profil
-      out.table.innerHTML = rows({
-        "Race": els.race.value,
-        "Affiliation": els.aff.value,
-        "Cheveux": els.cheveux.value,
-        "Yeux": els.yeux.value,
-        "Arme": els.arme.value,
-        "Trait distinctif": els.trait.value
-      });
-
-      out.age.textContent = els.age.value || "–";
-      out.force.textContent = els.force.value || "–";
-      out.magie.textContent = els.magie.value || "–";
-
-      // Timeline
-      const steps = (els.timeline.value||"").split("\n").map(s=>s.trim()).filter(Boolean);
-      out.steps.innerHTML = steps.length ? steps.map(s=>`<div style="padding:1rem;border-left:3px solid var(--t-accent);margin:.75rem 0;background:var(--panel);border-radius:0 10px 10px 0">${escapeHTML(s)}</div>`).join("") : `<div class="muted">Ajoute des étapes (une par ligne).</div>`;
-    }
-
-    function save(){
-      const obj = collect();
-      const key = "rz-characters";
-      const list = JSON.parse(localStorage.getItem(key) || "[]");
-      // remplace si même nom
-      const idx = list.findIndex(x => x.nom.toLowerCase() === obj.nom.toLowerCase());
-      if(idx>-1) list[idx]=obj; else list.push(obj);
-      localStorage.setItem(key, JSON.stringify(list));
-      drawSaved();
-      alert("Enregistré dans le navigateur ✅");
-    }
-
-    function drawSaved(){
-      const key = "rz-characters";
-      const list = JSON.parse(localStorage.getItem(key)||"[]");
-      out.saved.innerHTML = list.length ? list.map(x => `
-        <button data-load="${encodeURIComponent(x.nom)}" title="Charger">${escapeHTML(x.nom)}</button>
-        <button data-del="${encodeURIComponent(x.nom)}" title="Supprimer">🗑</button>
-      `).join("") : `<span class="muted">Aucun personnage enregistré.</span>`;
-      out.saved.querySelectorAll("[data-load]").forEach(b=>{
-        b.onclick=()=>{ load(b.dataset.load); render(); };
-      });
-      out.saved.querySelectorAll("[data-del]").forEach(b=>{
-        b.onclick=()=>{ del(b.dataset.del); drawSaved(); };
-      });
-    }
-
-    function load(name){
-      const key = "rz-characters";
-      const list = JSON.parse(localStorage.getItem(key)||"[]");
-      const x = list.find(v => v.nom.toLowerCase() === decodeURIComponent(name).toLowerCase());
-      if(!x) return;
-      for(const k in x){
-        const el = f("f-"+k);
-        if(el) el.value = x[k];
-      }
-      out.root.setAttribute("data-theme", x.theme || "subaru");
-    }
-
-    function del(name){
-      const key = "rz-characters";
-      const list = JSON.parse(localStorage.getItem(key)||"[]").filter(v => v.nom.toLowerCase() !== decodeURIComponent(name).toLowerCase());
-      localStorage.setItem(key, JSON.stringify(list));
-    }
-
-    function exportHTML(){
-      render();
-      const data = collect();
-      const html = standaloneHTML(data);
-      const blob = new Blob([html], {type:"text/html;charset=utf-8"});
-      const a = document.createElement("a");
-      a.href= URL.createObjectURL(blob);
-      a.download = `re_zero_${slug(data.nom||"personnage")}.html`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }
-
-    function shareLink(){
-      const data = collect();
-      const qs = new URLSearchParams();
-      Object.entries(data).forEach(([k,v])=>{ if(v) qs.set(k, v); });
-      const url = `${location.origin}${location.pathname}?${qs.toString()}`;
-      navigator.clipboard.writeText(url).then(()=>alert("Lien copié ✅")).catch(()=>prompt("Copie le lien :", url));
-    }
-
-    // Helpers
-    function collect(){
-      return {
-        nom: els.nom.value.trim(),
-        age: els.age.value.trim(),
-        race: els.race.value.trim(),
-        affiliation: els.aff.value.trim(),
-        cheveux: els.cheveux.value.trim(),
-        yeux: els.yeux.value.trim(),
-        arme: els.arme.value.trim(),
-        magie: els.magie.value.trim(),
-        trait: els.trait.value.trim(),
-        perso: els.perso.value.trim(),
-        timeline: els.timeline.value.trim(),
-        force: els.force.value,
-        theme: els.theme.value
+    const ok=document.getElementById('msg-ok'), err=document.getElementById('msg-err');
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault(); ok.textContent=''; err.textContent='';
+      const f=e.target;
+      const payload={
+        owner:user.id, name:f.name.value.trim(), theme:f.theme.value,
+        age:parseInt(f.age.value||'0',10)||null, race:f.race.value.trim()||null, affiliation:f.affiliation.value.trim()||null,
+        hair:f.hair.value.trim()||null, eyes:f.eyes.value.trim()||null, weapon:f.weapon.value.trim()||null,
+        magic:f.magic.value.trim()||null, trait:f.trait.value.trim()||null, personality:f.personality.value.trim()||null,
+        timeline:f.timeline.value.trim()||null, strength:f.strength.value, published: !!f.published.checked
       };
-    }
-    function rows(obj){
-      return Object.entries(obj).map(([k,v])=>`<tr><th>${k}</th><td>${escapeHTML(v||"–")}</td></tr>`).join("");
-    }
-    function valueOr(v,fallback){ return v && v.trim()? v.trim(): fallback; }
-    function f(id){ return document.getElementById(id); }
-    function q(s){ return document.querySelector(s); }
-    function slug(s){ return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\w]+/g,"-").replace(/(^-|-$)/g,""); }
-    function escapeHTML(s){ return (s||"").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;" }[m])); }
+      if(!payload.name){ err.textContent="Le nom est obligatoire."; return; }
+      const { data, error } = await sb.from('characters').insert(payload).select('id').single();
+      if (error){ err.textContent = error.message; return; }
+      ok.textContent="Personnage publié ✅ — ouverture…"; setTimeout(()=>{ location.href=`character.html?id=${data.id}`; }, 500);
+    });
 
-    // Première rendu
-    render();
+    function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;","&gt;":"&gt;","\"":"&quot;","'":"&#039;" }[m])); }
+  })();
   </script>
 </body>
-<!-- Librairie Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- Ton client partagé -->
-<script src="js/config.js"></script>
-<!-- Navigation dynamique -->
-<script src="js/nav.js"></script>
 </html>
