@@ -1,0 +1,76 @@
+/* ===== Re:Zero — ZERO UI (Design System) ===== */
+:root{
+  --ink:#e9eefc; --bg:#0a0f1a; --panel:#0f1626; --panel2:#0b1220; --muted:#9aa4c7;
+  --brd:rgba(255,255,255,.10); --ring:rgba(255,255,255,.25); --shadow:0 30px 70px rgba(0,0,0,.45);
+  --c:#7c9aff; --c-2:#a7baff; --glow:0 0 0 0 rgba(0,0,0,0);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body.zero{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);
+  background: radial-gradient(1200px 800px at 20% -10%, rgba(255,255,255,.06), transparent 40%),
+              linear-gradient(135deg,#0b0f18 0%, #121a2e 60%, #0b0f18 100%);
+  overflow-x:hidden}
+a{color:var(--c);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+
+/* THEMES (par page) */
+body[data-skin="magenta"]{ --c:#ff5bbd; --c-2:#ffc4e8; --glow:0 0 40px rgba(255,91,189,.25) }
+body[data-skin="amber"]  { --c:#ffbf47; --c-2:#ffe2a9; --glow:0 0 40px rgba(255,191,71,.25) }
+body[data-skin="cyan"]   { --c:#29d0ff; --c-2:#a9ecff; --glow:0 0 40px rgba(41,208,255,.25) }
+body[data-skin="crimson"]{ --c:#ff5a6f; --c-2:#ffc0c8; --glow:0 0 40px rgba(255,90,111,.25) }
+body[data-skin="amethyst"]{--c:#8a67ff; --c-2:#d4c9ff; --glow:0 0 40px rgba(138,103,255,.25)}
+body[data-skin="lime"]   { --c:#9bff5a; --c-2:#d5ffb6; --glow:0 0 40px rgba(155,255,90,.25) }
+
+/* Headings */
+.h-hero{font-family:Cinzel,serif;font-weight:800;letter-spacing:.06em;
+  background:linear-gradient(45deg,var(--c),var(--c-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-shadow:0 0 40px rgba(255,255,255,.08)}
+.h-sub{color:var(--muted);letter-spacing:.22em}
+
+/* Cards */
+.card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+  border:1px solid var(--brd); border-radius:16px; box-shadow:var(--shadow); overflow:hidden}
+.card .hd{padding:14px 18px;border-bottom:1px solid var(--brd);font-weight:700;color:var(--c);
+  background:linear-gradient(180deg,rgba(255,255,255,.06),transparent)}
+.card .bd{padding:18px}
+
+/* Inputs & Buttons */
+.input, input, textarea, select{
+  width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--brd);
+  background:rgba(255,255,255,.03); color:var(--ink); outline:none;
+}
+.input:focus, input:focus, textarea:focus, select:focus{ box-shadow:0 0 0 4px rgba(255,255,255,.06), 0 0 0 2px var(--ring) }
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px; padding:12px 16px; border-radius:12px;
+  background:linear-gradient(180deg,var(--c),calc(var(--c) - 10%)); color:#0b0f18; font-weight:800; border:1px solid rgba(0,0,0,.18);
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.15), var(--glow); cursor:pointer; transition:transform .08s ease}
+.btn:hover{ transform:translateY(-1px) }
+.btn.ghost{ background:transparent; color:var(--ink); border:1px solid var(--brd) }
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid var(--brd);color:var(--muted)}
+
+/* Grids */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:980px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
+/* Table */
+.table{width:100%;border-collapse:collapse;border:1px solid var(--brd);border-radius:14px;overflow:hidden}
+.table th{background:rgba(255,255,255,.05);color:var(--c);padding:12px;text-align:left;border-bottom:1px solid var(--brd)}
+.table td{padding:12px;border-bottom:1px solid var(--brd);color:#cfd6f6}
+.table tr:hover td{background:rgba(255,255,255,.03)}
+.table td:first-child{color:var(--c);font-weight:700}
+
+/* Timeline */
+.timeline .step{padding:14px 16px;margin:10px 0;border-left:3px solid var(--c);
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  border-radius:0 12px 12px 0; position:relative}
+.timeline .step::before{content:'';position:absolute;left:-8px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--c);
+  box-shadow:0 0 18px var(--c)}
+
+/* Hero block */
+.hero{margin-top:72px;padding:36px 18px;text-align:center;border:1px solid var(--brd);border-radius:16px;
+  background:radial-gradient(650px 220px at 50% 0%, rgba(255,255,255,.08), transparent 70%)}
+
+/* Small utils */
+.meta{color:var(--muted);font-size:13px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:720px){.row{grid-template-columns:1fr}}
+.center{display:flex;align-items:center;justify-content:center}
