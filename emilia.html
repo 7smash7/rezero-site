@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emilia - Re:Zero</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8e9ff 50%, #dfe3ff 100%);
+            color: #2d2d2d;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(138, 103, 255, 0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #8a67ff;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(138, 103, 255, 0.1);
+            color: #6842d4;
+        }
+
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #8a67ff;
+            font-weight: 700;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(138, 103, 255, 0.15) 0%, transparent 70%);
+            margin-top: 60px;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #8a67ff, #b794f6, #d4bbff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(138, 103, 255, 0.3);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #7a7a7a;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 3rem;
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #4a4a4a;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-left: 3px solid #8a67ff;
+            background: rgba(138, 103, 255, 0.05);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: #8a67ff;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8a67ff, transparent);
+            margin: 1rem auto;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid rgba(138, 103, 255, 0.2);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(138, 103, 255, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(138, 103, 255, 0.5);
+            box-shadow: 0 15px 40px rgba(138, 103, 255, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #8a67ff;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .card-text {
+            line-height: 1.8;
+            color: #5a5a5a;
+            font-weight: 300;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            border: 1px solid rgba(138, 103, 255, 0.2);
+            box-shadow: 0 5px 20px rgba(138, 103, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(138, 103, 255, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            color: #8a67ff;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #7a7a7a;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            padding: 2rem;
+            margin-bottom: 2rem;
+            background: white;
+            border-left: 3px solid #8a67ff;
+            position: relative;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 3px 15px rgba(138, 103, 255, 0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 2rem;
+            width: 13px;
+            height: 13px;
+            background: #8a67ff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(138, 103, 255, 0.6);
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            color: #8a67ff;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .timeline-text {
+            color: #5a5a5a;
+            line-height: 1.6;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: white;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(138, 103, 255, 0.1);
+        }
+
+        .data-table th {
+            background: rgba(138, 103, 255, 0.1);
+            color: #8a67ff;
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(138, 103, 255, 0.3);
+        }
+
+        .data-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(138, 103, 255, 0.1);
+            color: #5a5a5a;
+        }
+
+        .data-table tr:hover {
+            background: rgba(138, 103, 255, 0.05);
+        }
+
+        .data-table td:first-child {
+            color: #8a67ff;
+            font-weight: 500;
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: rgba(138, 103, 255, 0.3);
+            font-size: 1.5rem;
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .section {
+                padding: 3rem 1rem;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+            .data-table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-logo">Re:Zero</div>
+        <ul class="nav-links">
+    <li><a href="index.html">Subaru</a></li>
+    <li><a href="emilia.html">Emilia</a></li>
+    <li><a href="rem.html">Rem</a></li>
+	</ul>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-content floating">
+            <h1 class="title">EMILIA</h1>
+            <p class="subtitle">エミリア</p>
+            <div class="quote">
+                "Je ne veux pas que tu te sacrifies pour moi. Je veux que nous marchions ensemble vers l'avenir"
+            </div>
+            <p style="margin-top: 1.5rem; font-style: italic; color: #7a7a7a;">
+                La demi-elfe argentée qui aspire à devenir la 42ème Roi-Dragon
+            </p>
+        </div>
+    </div>
+
+    <section class="section">
+        <h2 class="section-title">Profil du Personnage</h2>
+        <div class="content-grid">
+            <div class="card">
+                <h3 class="card-title">Identité</h3>
+                <p class="card-text">
+                    Emilia est une demi-elfe aux cheveux argentés et aux yeux améthyste. Candidate 
+                    au trône royal de Lugunica, elle porte le lourd fardeau de ressembler à la 
+                    Sorcière de la Jalousie, Satella.
+                </p>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Personnalité</h3>
+                <p class="card-text">
+                    Douce, bienveillante et déterminée, Emilia cache une force intérieure inébranlable. 
+                    Malgré la discrimination qu'elle subit, elle garde un cœur pur et refuse de haïr 
+                    ceux qui la rejettent.
+                </p>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Capacités Magiques</h3>
+                <p class="card-text">
+                    Maîtresse exceptionnelle de la magie de glace, Emilia peut créer des structures 
+                    de glace complexes et contrôler la température. Son pouvoir est amplifié par son 
+                    contrat avec Puck, l'Esprit des Glaces.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background: rgba(138, 103, 255, 0.03);">
+        <h2 class="section-title">Statistiques</h2>
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-value">❄️</div>
+                <div class="stat-label">Magie de Glace</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">107</div>
+                <div class="stat-label">Âge Réel (ans)</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">18</div>
+                <div class="stat-label">Apparence (ans)</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">★★★★★</div>
+                <div class="stat-label">Puissance Magique</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Parcours Héroïque</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3 class="timeline-title">Éveil dans la Forêt d'Elior</h3>
+                <p class="timeline-text">
+                    Scellée dans la glace pendant près d'un siècle, Emilia se réveille sans la 
+                    plupart de ses souvenirs, protégée par Puck dans la forêt gelée.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Rencontre avec Subaru</h3>
+                <p class="timeline-text">
+                    Dans la capitale royale, Emilia sauve Subaru et lui donne le faux nom de 
+                    "Satella", ignorant l'impact que cette rencontre aura sur leurs destins.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Candidature Royale</h3>
+                <p class="timeline-text">
+                    Présentée comme candidate au trône par Roswaal, Emilia fait face à la 
+                    discrimination mais reste déterminée à prouver sa valeur.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Les Épreuves du Sanctuaire</h3>
+                <p class="timeline-text">
+                    Emilia affronte son passé traumatisant dans les épreuves du Sanctuaire, 
+                    confrontant ses souvenirs perdus et son identité véritable.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Libération et Croissance</h3>
+                <p class="timeline-text">
+                    En surmontant les épreuves, Emilia libère les habitants du Sanctuaire et 
+                    gagne en confiance, s'affirmant comme une véritable candidate royale.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background: white;">
+        <h2 class="section-title">Données Complètes</h2>
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Caractéristique</th>
+                        <th>Valeur</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nom Complet</td>
+                        <td>Emilia</td>
+                        <td>Demi-elfe aux cheveux argentés</td>
+                    </tr>
+                    <tr>
+                        <td>Âge Apparent</td>
+                        <td>18 ans</td>
+                        <td>Apparence juvénile malgré son âge réel</td>
+                    </tr>
+                    <tr>
+                        <td>Âge Réel</td>
+                        <td>107 ans</td>
+                        <td>Scellée dans la glace pendant 89 ans</td>
+                    </tr>
+                    <tr>
+                        <td>Race</td>
+                        <td>Demi-Elfe</td>
+                        <td>Moitié humaine, moitié elfe</td>
+                    </tr>
+                    <tr>
+                        <td>Couleur Cheveux</td>
+                        <td>Argenté</td>
+                        <td>Identique à la Sorcière de la Jalousie</td>
+                    </tr>
+                    <tr>
+                        <td>Couleur Yeux</td>
+                        <td>Améthyste</td>
+                        <td>Yeux violets éclatants</td>
+                    </tr>
+                    <tr>
+                        <td>Affiliation</td>
+                        <td>Candidate Royale</td>
+                        <td>Aspire au trône de Lugunica</td>
+                    </tr>
+                    <tr>
+                        <td>Sponsor</td>
+                        <td>Roswaal L. Mathers</td>
+                        <td>Magicien de cour et protecteur</td>
+                    </tr>
+                    <tr>
+                        <td>Esprit Contracté</td>
+                        <td>Puck</td>
+                        <td>Grand Esprit du Feu (Bête de la Fin)</td>
+                    </tr>
+                    <tr>
+                        <td>Magie Principale</td>
+                        <td>Glace</td>
+                        <td>Maîtrise exceptionnelle du Yin</td>
+                    </tr>
+                    <tr>
+                        <td>Niveau Magie</td>
+                        <td>Très Élevé</td>
+                        <td>Parmi les plus puissantes du royaume</td>
+                    </tr>
+                    <tr>
+                        <td>Sorts Signature</td>
+                        <td>Ice Brand Arts</td>
+                        <td>Techniques de combat à la glace</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 1</td>
+                        <td>Subaru</td>
+                        <td>Chevalier dévoué et amour réciproque</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 2</td>
+                        <td>Puck</td>
+                        <td>Figure paternelle et protecteur</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 3</td>
+                        <td>Beatrice</td>
+                        <td>Amie d'enfance retrouvée</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 4</td>
+                        <td>Fortuna</td>
+                        <td>Mère adoptive (décédée)</td>
+                    </tr>
+                    <tr>
+                        <td>Origine</td>
+                        <td>Forêt d'Elior</td>
+                        <td>Lieu de naissance et de scellement</td>
+                    </tr>
+                    <tr>
+                        <td>Résidence</td>
+                        <td>Manoir Roswaal</td>
+                        <td>Base pour la candidature royale</td>
+                    </tr>
+                    <tr>
+                        <td>Traumatisme</td>
+                        <td>Destruction d'Elior</td>
+                        <td>Perte de sa famille et village</td>
+                    </tr>
+                    <tr>
+                        <td>Objectif</td>
+                        <td>Devenir Reine</td>
+                        <td>Prouver la valeur des demi-elfes</td>
+                    </tr>
+                    <tr>
+                        <td>Force</td>
+                        <td>Compassion</td>
+                        <td>Refuse de haïr malgré la discrimination</td>
+                    </tr>
+                    <tr>
+                        <td>Faiblesse</td>
+                        <td>Manque confiance</td>
+                        <td>Doute souvent de sa valeur</td>
+                    </tr>
+                    <tr>
+                        <td>Symbole</td>
+                        <td>Cristal de Glace</td>
+                        <td>Représente sa pureté et force</td>
+                    </tr>
+                    <tr>
+                        <td>Style Combat</td>
+                        <td>Magie Distance</td>
+                        <td>Attaques de glace et contrôle du champ</td>
+                    </tr>
+                    <tr>
+                        <td>Trait Distinctif</td>
+                        <td>Robe blanche</td>
+                        <td>Tenue élégante et distinctive</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="section" style="text-align: center; padding: 4rem 2rem; background: rgba(138, 103, 255, 0.03);">
+        <h2 class="section-title">Citation Emblématique</h2>
+        <div class="quote" style="margin-top: 2rem; font-size: 1.4rem;">
+            "Même si le monde entier me rejette, même si personne ne croit en moi, 
+            je continuerai à avancer. Parce que maintenant, j'ai quelqu'un qui croit 
+            en moi plus que quiconque."
+        </div>
+    </section>
+
+    <script>
+        // Effet de flocons de neige
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 5 + 's';
+            snowflake.style.opacity = Math.random() * 0.5 + 0.2;
+            document.body.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, 8000);
+        }
+
+        setInterval(createSnowflake, 300);
+    </script>
+</body>
+</html>

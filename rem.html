@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rem - Re:Zero</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #0a1428 0%, #1a2942 50%, #2d4a7c 100%);
+            color: #e8f4ff;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(13, 25, 48, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(100, 181, 246, 0.3);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #64b5f6;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(100, 181, 246, 0.2);
+            color: #90caf9;
+        }
+
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #64b5f6;
+            font-weight: 700;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(100, 181, 246, 0.15) 0%, transparent 70%);
+            margin-top: 60px;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #42a5f5, #64b5f6, #90caf9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(100, 181, 246, 0.5);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #90caf9;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 3rem;
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #e1f5fe;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-left: 3px solid #42a5f5;
+            background: rgba(100, 181, 246, 0.1);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: #64b5f6;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #42a5f5, transparent);
+            margin: 1rem auto;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: rgba(100, 181, 246, 0.08);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(100, 181, 246, 0.6);
+            box-shadow: 0 15px 40px rgba(100, 181, 246, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #64b5f6;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .card-text {
+            line-height: 1.8;
+            color: #b3e5fc;
+            font-weight: 300;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(100, 181, 246, 0.08);
+            border-radius: 15px;
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(100, 181, 246, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            color: #64b5f6;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #90caf9;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            padding: 2rem;
+            margin-bottom: 2rem;
+            background: rgba(100, 181, 246, 0.08);
+            border-left: 3px solid #42a5f5;
+            position: relative;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 2rem;
+            width: 13px;
+            height: 13px;
+            background: #42a5f5;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(66, 165, 245, 0.8);
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            color: #64b5f6;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .timeline-text {
+            color: #b3e5fc;
+            line-height: 1.6;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: rgba(100, 181, 246, 0.05);
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .data-table th {
+            background: rgba(100, 181, 246, 0.15);
+            color: #64b5f6;
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(100, 181, 246, 0.3);
+        }
+
+        .data-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(100, 181, 246, 0.1);
+            color: #b3e5fc;
+        }
+
+        .data-table tr:hover {
+            background: rgba(100, 181, 246, 0.1);
+        }
+
+        .data-table td:first-child {
+            color: #64b5f6;
+            font-weight: 500;
+        }
+
+        .heart-float {
+            position: fixed;
+            font-size: 1.5rem;
+            opacity: 0;
+            animation: heartFloat 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes heartFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.5);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .section {
+                padding: 3rem 1rem;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+            .data-table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-logo">Re:Zero</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Subaru</a></li>
+            <li><a href="emilia.html">Emilia</a></li>
+            <li><a href="rem.html">Rem</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-content floating">
+            <h1 class="title">REM</h1>
+            <p class="subtitle">レム</p>
+            <div class="quote">
+                "Subaru-kun est le héros de Rem. Peu importe ce que le monde pense, pour Rem, tu es son héros"
+            </div>
+            <p style="margin-top: 1.5rem; font-style: italic; color: #90caf9;">
+                La servante oni aux cheveux bleus qui a trouvé sa raison de vivre
+            </p>
+        </div>
+    </div>
+
+    <section class="section">
+        <h2 class="section-title">Profil du Personnage</h2>
+        <div class="content-grid">
+            <div class="card">
+                <h3 class="card-title">Identité</h3>
+                <p class="card-text">
+                    Rem est une oni aux cheveux bleus ciel, sœur jumelle de Ram. Servante dévouée 
+                    au manoir Roswaal, elle cache sous son apparence douce une puissance redoutable 
+                    héritée de sa nature démoniaque.
+                </p>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Personnalité</h3>
+                <p class="card-text">
+                    D'abord méfiante et froide, Rem révèle un cœur débordant d'amour et de loyauté 
+                    après avoir été sauvée par Subaru. Son dévouement absolu et sa capacité à croire 
+                    en lui sont sans limites.
+                </p>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Capacités de Combat</h3>
+                <p class="card-text">
+                    En tant qu'oni, Rem possède une force surhumaine amplifiée par sa corne. Elle 
+                    maîtrise le fléau d'armes Morning Star et peut entrer dans un état berserk 
+                    dévastateur au combat.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background: rgba(0, 0, 0, 0.2);">
+        <h2 class="section-title">Statistiques</h2>
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-value">💙</div>
+                <div class="stat-label">Amour pour Subaru</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">17</div>
+                <div class="stat-label">Âge</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">★★★★★</div>
+                <div class="stat-label">Force Physique</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Dévotion</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Parcours Émotionnel</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3 class="timeline-title">Traumatisme d'Enfance</h3>
+                <p class="timeline-text">
+                    Née avec une corne d'oni, contrairement à sa sœur Ram qui en possédait deux, 
+                    Rem a grandi avec un profond complexe d'infériorité et un sentiment de culpabilité.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">L'Attaque du Culte de la Sorcière</h3>
+                <p class="timeline-text">
+                    Lors de l'attaque de leur village, Ram perd sa corne pour sauver Rem. Ce sacrifice 
+                    ancre en elle un sentiment écrasant de dette et d'indignité.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Arrivée au Manoir Roswaal</h3>
+                <p class="timeline-text">
+                    Recueillies par Roswaal, Rem et Ram deviennent servantes. Rem se dévoue corps 
+                    et âme à sa sœur, cherchant constamment à compenser ce qu'elle perçoit comme 
+                    sa faiblesse.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Rencontre avec Subaru</h3>
+                <p class="timeline-text">
+                    Initialement méfiante de Subaru en raison de l'odeur de la Sorcière, Rem 
+                    le tue plusieurs fois dans différentes boucles temporelles par précaution.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Le Sauvetage dans la Forêt</h3>
+                <p class="timeline-text">
+                    Subaru risque sa vie pour sauver Rem des mabeast. Cet acte désintéressé 
+                    transforme complètement la perception que Rem a de lui.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Confession de Subaru</h3>
+                <p class="timeline-text">
+                    Face au désespoir de Subaru, Rem prononce son discours légendaire "Partir de zéro", 
+                    devenant la lumière qui le guide hors des ténèbres. C'est à ce moment qu'elle 
+                    tombe profondément amoureuse de lui.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">La Baleine Blanche</h3>
+                <p class="timeline-text">
+                    Rem combat aux côtés de Subaru contre la Baleine Blanche, démontrant sa 
+                    puissance et son courage face à l'une des trois grandes mabeasts.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Le Sommeil Éternel</h3>
+                <p class="timeline-text">
+                    Capturée par l'Archevêque de la Gourmandise Ley Batenkaitos, Rem voit son 
+                    nom et ses souvenirs dévorés, la plongeant dans un sommeil dont elle ne peut 
+                    se réveiller. Le monde entier l'oublie, sauf Subaru.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background: rgba(0, 0, 0, 0.15);">
+        <h2 class="section-title">Données Complètes</h2>
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Caractéristique</th>
+                        <th>Valeur</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nom</td>
+                        <td>Rem</td>
+                        <td>Servante oni du manoir Roswaal</td>
+                    </tr>
+                    <tr>
+                        <td>Âge</td>
+                        <td>17 ans</td>
+                        <td>Même âge que sa sœur jumelle Ram</td>
+                    </tr>
+                    <tr>
+                        <td>Race</td>
+                        <td>Oni</td>
+                        <td>Clan démoniaque aux capacités surhumaines</td>
+                    </tr>
+                    <tr>
+                        <td>Couleur Cheveux</td>
+                        <td>Bleu Ciel</td>
+                        <td>Cheveux courts avec bandeau de servante</td>
+                    </tr>
+                    <tr>
+                        <td>Couleur Yeux</td>
+                        <td>Bleu Clair</td>
+                        <td>Œil droit caché par ses cheveux</td>
+                    </tr>
+                    <tr>
+                        <td>Trait Distinctif</td>
+                        <td>Œil droit caché</td>
+                        <td>Cache son œil droit avec ses cheveux</td>
+                    </tr>
+                    <tr>
+                        <td>Affiliation</td>
+                        <td>Manoir Roswaal</td>
+                        <td>Servante loyale de Roswaal L. Mathers</td>
+                    </tr>
+                    <tr>
+                        <td>Sœur Jumelle</td>
+                        <td>Ram</td>
+                        <td>Lien indéfectible malgré les différences</td>
+                    </tr>
+                    <tr>
+                        <td>Arme Principale</td>
+                        <td>Morning Star</td>
+                        <td>Fléau d'armes massif et dévastateur</td>
+                    </tr>
+                    <tr>
+                        <td>Capacité Spéciale</td>
+                        <td>Mode Oni</td>
+                        <td>Transformation berserk avec corne visible</td>
+                    </tr>
+                    <tr>
+                        <td>Force Physique</td>
+                        <td>Surhumaine</td>
+                        <td>Multipliée lorsque la corne est active</td>
+                    </tr>
+                    <tr>
+                        <td>Magie</td>
+                        <td>Eau (Al Huma)</td>
+                        <td>Maîtrise basique de la magie de l'eau</td>
+                    </tr>
+                    <tr>
+                        <td>Compétence</td>
+                        <td>Travaux Ménagers</td>
+                        <td>Excellente cuisinière et femme de chambre</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 1</td>
+                        <td>Subaru</td>
+                        <td>Amour absolu et dévotion sans limites</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 2</td>
+                        <td>Ram</td>
+                        <td>Sœur adorée, sentiment d'infériorité</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 3</td>
+                        <td>Emilia</td>
+                        <td>Respect et loyauté envers la maîtresse</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 4</td>
+                        <td>Roswaal</td>
+                        <td>Employeur et bienfaiteur sauveur</td>
+                    </tr>
+                    <tr>
+                        <td>Traumatisme</td>
+                        <td>Perte de la corne de Ram</td>
+                        <td>Culpabilité écrasante depuis l'enfance</td>
+                    </tr>
+                    <tr>
+                        <td>Complexe</td>
+                        <td>Infériorité</td>
+                        <td>Se compare constamment à sa sœur</td>
+                    </tr>
+                    <tr>
+                        <td>Moment Décisif</td>
+                        <td>Discours "Partir de zéro"</td>
+                        <td>Sauve Subaru du désespoir total</td>
+                    </tr>
+                    <tr>
+                        <td>Citation Iconique</td>
+                        <td>"Rem aime Subaru"</td>
+                        <td>Confession d'amour pure et sincère</td>
+                    </tr>
+                    <tr>
+                        <td>État Actuel</td>
+                        <td>Sommeil</td>
+                        <td>Nom et souvenirs dévorés par Gluttony</td>
+                    </tr>
+                    <tr>
+                        <td>Statut Mémoire</td>
+                        <td>Oubliée de tous</td>
+                        <td>Seul Subaru se souvient d'elle</td>
+                    </tr>
+                    <tr>
+                        <td>Objectif de Subaru</td>
+                        <td>La réveiller</td>
+                        <td>Trouver un moyen de restaurer ses souvenirs</td>
+                    </tr>
+                    <tr>
+                        <td>Force</td>
+                        <td>Loyauté absolue</td>
+                        <td>Dévouement sans faille envers ceux qu'elle aime</td>
+                    </tr>
+                    <tr>
+                        <td>Faiblesse</td>
+                        <td>Auto-dépréciation</td>
+                        <td>Peine à reconnaître sa propre valeur</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="section" style="text-align: center; padding: 4rem 2rem; background: rgba(0, 0, 0, 0.2);">
+        <h2 class="section-title">Citation Emblématique</h2>
+        <div class="quote" style="margin-top: 2rem; font-size: 1.4rem;">
+            "Rem aime Subaru-kun. Rem veut vivre avec Subaru-kun. Rem veut passer sa 
+            vie avec lui. Rem veut embrasser Subaru-kun quand il est triste. Rem veut 
+            lui tenir la main quand il est effrayé. Rem veut... être avec Subaru-kun 
+            pour toujours."
+        </div>
+        <p style="margin-top: 2rem; color: #90caf9; font-size: 1.1rem; font-style: italic;">
+            💙 En attendant son réveil... 💙
+        </p>
+    </section>
+
+    <script>
+        // Effet de cœurs flottants
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-float');
+            heart.innerHTML = '💙';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDelay = Math.random() * 3 + 's';
+            heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        setInterval(createHeart, 800);
+    </script>
+</body>
+</html>

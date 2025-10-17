@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natsuki Subaru - Re:Zero</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e8e8e8;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(196, 69, 105, 0.3);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #ff6b6b;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(196, 69, 105, 0.3);
+            color: #fff;
+        }
+
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            font-weight: 700;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(139, 0, 0, 0.2) 0%, transparent 70%);
+            margin-top: 60px;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f, #c44569);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(255, 107, 107, 0.5);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #a8a8a8;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 3rem;
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #d4d4d4;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-left: 3px solid #c44569;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: #ff6b6b;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #c44569, transparent);
+            margin: 1rem auto;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(196, 69, 105, 0.3);
+            padding: 2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(196, 69, 105, 0.6);
+            box-shadow: 0 10px 30px rgba(196, 69, 105, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .card-text {
+            line-height: 1.8;
+            color: #c8c8c8;
+            font-weight: 300;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(196, 69, 105, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            color: #ff6b6b;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #a8a8a8;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            padding: 2rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #c44569;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 2rem;
+            width: 13px;
+            height: 13px;
+            background: #c44569;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(196, 69, 105, 0.8);
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            color: #ff6b6b;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-text {
+            color: #c8c8c8;
+            line-height: 1.6;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .data-table th {
+            background: rgba(196, 69, 105, 0.3);
+            color: #ff6b6b;
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(196, 69, 105, 0.5);
+        }
+
+        .data-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(196, 69, 105, 0.1);
+            color: #c8c8c8;
+        }
+
+        .data-table tr:hover {
+            background: rgba(196, 69, 105, 0.1);
+        }
+
+        .data-table td:first-child {
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .section {
+                padding: 3rem 1rem;
+            }
+            .data-table {
+                font-size: 0.9rem;
+            }
+                font-size: 0.9rem;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-logo">Re:Zero</div>
+        <ul class="nav-links">
+    <li><a href="index.html">Subaru</a></li>
+    <li><a href="emilia.html">Emilia</a></li>
+    <li><a href="rem.html">Rem</a></li>
+	</ul>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-content floating">
+            <h1 class="title">NATSUKI SUBARU</h1>
+            <p class="subtitle">ナツキ・スバル</p>
+            <div class="quote">
+                "Tomber dans un péché me permet seulement de revenir plus fort"
+            </div>
+            <p style="margin-top: 1.5rem; font-style: italic; color: #a8a8a8;">
+                Elle est ma lumière dans le noir. Chaque fois que je tombe, c'est elle qui me montre le chemin
+            </p>
+        </div>
+    </div>
+
+    <section class="section">
+        <h2 class="section-title">Profil du Personnage</h2>
+        <div class="content-grid">
+            <div class="card">
+                <h3 class="card-title">Identité</h3>
+                <p class="card-text">
+                    Natsuki Subaru est un jeune homme ordinaire transporté dans un monde fantastique. 
+                    Malgré l'absence de pouvoirs spéciaux, il possède "Return by Death", une capacité 
+                    qui lui permet de revenir dans le temps à sa mort.
+                </p>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Personnalité</h3>
+                <p class="card-text">
+                    Déterminé, courageux et parfois impulsif, Subaru refuse d'abandonner ceux qu'il 
+                    aime. Sa persévérance face à des épreuves répétées forge son caractère unique.
+                </p>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Capacités</h3>
+                <p class="card-text">
+                    Return by Death (Retour par la Mort), magie de Shamac, excellente adaptabilité 
+                    stratégique et capacité à inspirer les autres malgré ses propres faiblesses.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background: rgba(0, 0, 0, 0.3);">
+        <h2 class="section-title">Statistiques</h2>
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-value">∞</div>
+                <div class="stat-label">Morts</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Détermination</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">17</div>
+                <div class="stat-label">Âge</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">★★★★★</div>
+                <div class="stat-label">Courage</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Parcours Épique</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3 class="timeline-title">Arrivée dans le Royaume de Lugunica</h3>
+                <p class="timeline-text">
+                    Transporté mystérieusement dans un monde fantastique, Subaru découvre 
+                    rapidement la dure réalité de sa nouvelle existence et rencontre Emilia.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Découverte de Return by Death</h3>
+                <p class="timeline-text">
+                    Après sa première mort, Subaru réalise qu'il possède le pouvoir de revenir 
+                    dans le temps, mais à un prix psychologique terrible.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">Le Manoir Roswaal</h3>
+                <p class="timeline-text">
+                    Devenu serviteur au manoir de Roswaal, Subaru fait face à des boucles 
+                    temporelles mortelles pour sauver Rem et Ram.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <h3 class="timeline-title">L'Épreuve du Sanctuaire</h3>
+                <p class="timeline-text">
+                    Subaru affronte ses propres démons intérieurs et ses échecs passés dans 
+                    le Sanctuaire, marquant un tournant dans sa croissance personnelle.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background: rgba(0, 0, 0, 0.2);">
+        <h2 class="section-title">Données Complètes</h2>
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Caractéristique</th>
+                        <th>Valeur</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nom</td>
+                        <td>Natsuki Subaru</td>
+                        <td>Protagoniste principal de Re:Zero</td>
+                    </tr>
+                    <tr>
+                        <td>Âge</td>
+                        <td>17 ans</td>
+                        <td>Lycéen transporté dans un autre monde</td>
+                    </tr>
+                    <tr>
+                        <td>Origine</td>
+                        <td>Japon</td>
+                        <td>Monde moderne avant transportation</td>
+                    </tr>
+                    <tr>
+                        <td>Pouvoir Principal</td>
+                        <td>Return by Death</td>
+                        <td>Retour dans le temps après la mort</td>
+                    </tr>
+                    <tr>
+                        <td>Affiliation</td>
+                        <td>Candidature Emilia</td>
+                        <td>Chevalier d'Emilia</td>
+                    </tr>
+                    <tr>
+                        <td>Niveau de Magie</td>
+                        <td>Faible</td>
+                        <td>Peut utiliser Shamac et quelques sorts basiques</td>
+                    </tr>
+                    <tr>
+                        <td>Force Physique</td>
+                        <td>Moyenne</td>
+                        <td>Entraînement avec Wilhelm</td>
+                    </tr>
+                    <tr>
+                        <td>Intelligence</td>
+                        <td>Élevée</td>
+                        <td>Excellente capacité stratégique</td>
+                    </tr>
+                    <tr>
+                        <td>Détermination</td>
+                        <td>Maximale</td>
+                        <td>Ne renonce jamais malgré la souffrance</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 1</td>
+                        <td>Emilia</td>
+                        <td>Amour et dévotion absolue</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 2</td>
+                        <td>Rem</td>
+                        <td>Soutien inconditionnel et amour</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 3</td>
+                        <td>Ram</td>
+                        <td>Respect mutuel progressif</td>
+                    </tr>
+                    <tr>
+                        <td>Relation 4</td>
+                        <td>Beatrice</td>
+                        <td>Contrat de partenariat spirituel</td>
+                    </tr>
+                    <tr>
+                        <td>Arc Majeur 1</td>
+                        <td>Arc du Manoir</td>
+                        <td>Découverte de ses pouvoirs</td>
+                    </tr>
+                    <tr>
+                        <td>Arc Majeur 2</td>
+                        <td>Arc de la Baleine Blanche</td>
+                        <td>Combat contre Petelgeuse</td>
+                    </tr>
+                    <tr>
+                        <td>Arc Majeur 3</td>
+                        <td>Arc du Sanctuaire</td>
+                        <td>Confrontation avec son passé</td>
+                    </tr>
+                    <tr>
+                        <td>Arc Majeur 4</td>
+                        <td>Arc de la Tour de Pleiades</td>
+                        <td>Libération de Rem</td>
+                    </tr>
+                    <tr>
+                        <td>Trait Distinctif</td>
+                        <td>Survêtement</td>
+                        <td>Tenue emblématique du monde moderne</td>
+                    </tr>
+                    <tr>
+                        <td>Arme</td>
+                        <td>Fouet</td>
+                        <td>Utilisé occasionnellement au combat</td>
+                    </tr>
+                    <tr>
+                        <td>Animal de Compagnie</td>
+                        <td>Patrasche</td>
+                        <td>Dragon terrestre fidèle</td>
+                    </tr>
+                    <tr>
+                        <td>Traumatisme</td>
+                        <td>Morts répétées</td>
+                        <td>Impact psychologique profond</td>
+                    </tr>
+                    <tr>
+                        <td>Force Mentale</td>
+                        <td>Résilience extrême</td>
+                        <td>Surmonte chaque épreuve</td>
+                    </tr>
+                    <tr>
+                        <td>Objectif Principal</td>
+                        <td>Protéger Emilia</td>
+                        <td>Rêve de la voir couronnée</td>
+                    </tr>
+                    <tr>
+                        <td>Faiblesse</td>
+                        <td>Impulsivité</td>
+                        <td>Agit parfois sans réfléchir</td>
+                    </tr>
+                    <tr>
+                        <td>Style de Combat</td>
+                        <td>Tactique</td>
+                        <td>Compense le manque de force brute</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="section" style="text-align: center; padding: 4rem 2rem;">
+        <h2 class="section-title">Citation Emblématique</h2>
+        <div class="quote" style="margin-top: 2rem; font-size: 1.4rem;">
+            "Je ne peux pas abandonner. Si j'abandonne maintenant, tout ce que j'ai 
+            enduré n'aura servi à rien. Je continuerai, encore et encore, jusqu'à ce 
+            que je trouve la bonne voie."
+        </div>
+    </section>
+</body>
+</html>
