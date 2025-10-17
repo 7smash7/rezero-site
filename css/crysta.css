@@ -1,0 +1,139 @@
+/* ============ Re:Zero UI — Thème CRYSTA (inspiré Emilia, en cyan) ============ */
+
+/* Palette (tu peux changer la couleur principale ici) */
+:root{
+  --c: #00c9ff;          /* couleur principale (cyan) */
+  --c-600:#00b1e0;
+  --c-300:#8be9ff;
+  --ink:#202432;         /* texte principal sombre */
+  --muted:#6c7396;       /* texte secondaire */
+  --paper:#ffffff;       /* cartes claires */
+  --bg1:#f8fdff;         /* fond dégradé */
+  --bg2:#e8f9ff;
+  --bg3:#dff6ff;
+  --brd: rgba(0, 201, 255, 0.22);
+  --shadow: 0 8px 30px rgba(0,0,0,.10);
+}
+
+/* Base */
+*{box-sizing:border-box}
+html,body{margin:0}
+body.theme-crysta{
+  font-family: 'Noto Sans JP', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+  overflow-x: hidden;
+}
+
+/* Titres style Emilia */
+.h1-cinzel, .h2-cinzel {
+  font-family: 'Cinzel', serif;
+  letter-spacing:.04em;
+}
+.h1-cinzel{ font-size: 3.2rem; font-weight:700; }
+.h2-cinzel{ font-size: 2.2rem; font-weight:700; color: var(--c); text-align:center; margin:0 0 1rem }
+.h2-cinzel + .rule {
+  width:120px;height:3px;margin:10px auto 24px;
+  background: linear-gradient(90deg, transparent, var(--c), transparent);
+  border-radius:2px;
+}
+
+/* Cartes */
+.card{
+  background: var(--paper);
+  border: 1px solid var(--brd);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card:hover{ transform: translateY(-4px); border-color: rgba(0, 201, 255, 0.45); box-shadow: 0 18px 50px rgba(0,0,0,.15); }
+.card .hd{
+  padding:16px 18px;
+  background: linear-gradient(180deg, rgba(0,201,255,.08), transparent);
+  border-bottom: 1px solid rgba(0, 201, 255, .20);
+  font-weight:700;
+  color: var(--c-600);
+}
+.card .bd{ padding:18px 18px 20px; }
+
+/* Inputs / Boutons */
+.input, input, textarea, select {
+  width:100%; padding:12px 14px; border-radius:12px;
+  border:1px solid rgba(0,0,0,.08);
+  background:#fff; color:var(--ink); outline:none;
+}
+input::placeholder, textarea::placeholder{ color:#9aa3bd }
+.btn{
+  display:inline-block; padding:12px 16px; border-radius:12px; cursor:pointer;
+  border:1px solid rgba(0,0,0,.10);
+  background: var(--c); color:#04222b; font-weight:700; text-decoration:none; text-align:center;
+}
+.btn.ghost{ background:#fff; color:var(--ink) }
+.badge{ display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid var(--brd); color:var(--muted); background:#fff; font-size:12px }
+
+/* Stats / Meta */
+.meta{ color: var(--muted); font-size: 13px }
+.stat-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:12px }
+.stat{
+  text-align:center; padding:16px; border-radius:14px; background:#fff;
+  border:1px solid rgba(0, 201, 255, .18);
+}
+.stat .k{ color:var(--muted); font-size:12px }
+.stat .v{ font-weight:700; margin-top:4px; color: var(--c-600) }
+
+/* Table style Emilia */
+.table{
+  width:100%; border-collapse: collapse; background:#fff; border-radius:16px; overflow:hidden; box-shadow: var(--shadow);
+}
+.table th{ text-align:left; padding:14px 16px; font-weight:700; color:var(--c-600); background: rgba(0,201,255,.08); border-bottom:2px solid rgba(0,201,255,.25) }
+.table td{ padding:12px 16px; border-bottom:1px solid rgba(0,0,0,.06); color:#454c6a }
+.table tr:hover td{ background: rgba(0,201,255,.04) }
+.table td:first-child{ color: var(--c-600); font-weight:600 }
+
+/* Timeline (gauche colorée) */
+.timeline .step{
+  padding:16px 18px; margin:12px 0; background:#fff; border-left:3px solid var(--c);
+  border-radius: 0 12px 12px 0; box-shadow: 0 6px 20px rgba(0,0,0,.06);
+  position:relative;
+}
+.timeline .step::before{
+  content:''; position:absolute; left:-8px; top:18px; width:12px; height:12px; background:var(--c); border-radius:50%;
+  box-shadow: 0 0 18px rgba(0, 201, 255, .6);
+}
+
+/* Sections / Layouts */
+.wrap { max-width:1100px; margin:0 auto; padding:18px }
+.section { padding: 28px 0 }
+.grid-2 { display:grid; gap:16px; grid-template-columns:1fr 1fr }
+@media(max-width:980px){ .grid-2{ grid-template-columns: 1fr } }
+
+/* HERO translucide style Emilia */
+.hero{
+  margin-top: 72px; /* nav collante */
+  padding: 46px 20px;
+  background: radial-gradient(ellipse at center, rgba(0,201,255,.15) 0%, transparent 70%);
+  border: 1px solid rgba(0,201,255,.15);
+  border-radius: 16px;
+  text-align:center;
+}
+.hero .title{
+  font-family: 'Cinzel', serif; font-weight:700; letter-spacing:.08em; font-size: 3.6rem;
+  background: linear-gradient(45deg, var(--c), var(--c-300), #dfffff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  text-shadow: 0 0 30px rgba(0, 201, 255, .25);
+}
+.hero .subtitle{ font-size: 1.1rem; color: var(--muted); letter-spacing: .24em }
+
+/* Quotes */
+.quote{
+  font-style: italic; font-size:1.1rem; color:#445; max-width:820px; margin:16px auto 0; padding:16px 18px;
+  border-left: 3px solid var(--c); background: rgba(0,201,255,.06); border-radius: 0 10px 10px 0;
+}
+
+/* Nav (nav.js) harmonisation couleur */
+.rz-topbar{ background: rgba(255,255,255,.85) !important; border-bottom:1px solid rgba(0,0,0,.06) !important; }
+.rz-link{ color: #246; }
+.rz-link.active{ border-color: rgba(0,201,255,.45) !important; background: rgba(0,201,255,.10) !important; color:#123 !important }
+.rz-btn{ background: var(--c) !important; color:#04222b !important; border-color: rgba(0,0,0,.10) !important }
+.rz-btn.ghost{ background:#fff !important; color:#123 !important }
+.rz-avatar{ border-color: rgba(0,0,0,.12) !important; background:#eef9ff !important; color:#489 !important }
