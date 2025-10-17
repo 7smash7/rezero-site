@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Explorer – Re:Zero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0b0f18; --bg2:#141a2e; --txt:#e9eefc; --muted:#9aa4c7; --accent:#7c9aff;
+      --panel:#121829; --panel2:#0f1424; --brd:rgba(255,255,255,.10);
+      --err:#ff6b6b;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%);color:var(--txt)}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:20px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 0}
+    .brand{font-weight:700;letter-spacing:.3px}
+    .nav a{margin-left:14px}
+
+    .controls{display:grid;grid-template-columns:1fr 180px 140px;gap:10px;margin-top:10px}
+    @media(max-width:880px){.controls{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.controls{grid-template-columns:1fr}}
+
+    .input, .select, .btn{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--brd);outline:none}
+    .input{background:rgba(255,255,255,.04);color:var(--txt)}
+    .select{background:rgba(255,255,255,.04);color:var(--txt)}
+    .btn{background:var(--accent);color:#0b0f18;font-weight:700;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--txt)}
+    .hint{color:var(--muted);font-size:13px;margin-top:6px}
+
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+    @media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:640px){.grid{grid-template-columns:1fr}}
+
+    .card{display:block;background:var(--panel);border:1px solid var(--brd);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+    .card .hd{padding:14px 16px;background:linear-gradient(180deg,rgba(124,154,255,.10),transparent)}
+    .card .title{font-weight:700}
+    .meta{color:var(--muted);font-size:12px;margin-top:4px}
+    .body{padding:14px 16px;background:var(--panel2);border-top:1px solid var(--brd)}
+    .row{display:grid;grid-template-columns:110px 1fr;gap:10px}
+    .empty{color:var(--muted);text-align:center;margin:20px 0}
+    .err{color:var(--err);margin-top:10px}
+    .actions{display:flex;justify-content:center;margin:16px 0;gap:10px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- NAV -->
+    <div class="topbar">
+      <div class="brand">Re:Zero – Explorer</div>
+      <div class="nav">
+        <a href="index.html">Subaru</a>
+        <a href="emilia.html">Emilia</a>
+        <a href="rem.html">Rem</a>
+        <a href="create.html"><b>Créer</b></a>
+        <a href="account.html">Mon compte</a>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <input id="q" class="input" placeholder="Recherche : nom du personnage ou @username (ex: @capitaineshams)">
+      <select id="theme" class="select">
+        <option value="">Tous les thèmes</option>
+        <option value="subaru">Subaru (sombre/rouge)</option>
+        <option value="emilia">Emilia (clair/violet)</option>
+        <option value="rem">Rem (bleu/océan)</option>
+      </select>
+      <select id="order" class="select">
+        <option value="new">Plus récents</option>
+        <option value="old">Plus anciens</option>
+        <option value="name">Nom (A→Z)</option>
+      </select>
+    </div>
+    <div class="hint">Astuce : tape <b>@username</b> pour filtrer par créateur. Sinon, la recherche s’applique au <b>nom</b> du personnage.</div>
+
+    <!-- FEED -->
+    <div id="feed" class="grid"></div>
+    <div id="empty" class="empty" style="display:none">Aucun résultat.</div>
+    <p id="err" class="err"></p>
+
+    <div class="actions">
+      <button id="more" class="btn" style="display:none">Charger plus</button>
+      <button id="reset" class="btn ghost" style="display:none">Réinitialiser</button>
+    </div>
+  </div>
+
+  <!-- 1) Librairie Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- 2) Ton client partagé -->
+  <script src="js/config.js"></script>
+
+  <!-- 3) Logique Explore -->
+  <script>
+  (function(){
+    const PAGE_SIZE = 12;
+    let state = {
+      q: "",
+      theme: "",
+      order: "new",
+      offset: 0,
+      loading: false,
+      lastBatchCount: 0,
+      currentOwnerId: null // si recherche par @username
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const feed = $("feed"), empty = $("empty"), err = $("err");
+    const q = $("q"), theme = $("theme"), order = $("order");
+    const more = $("more"), reset = $("reset");
+
+    // Événements UI
+    q.addEventListener("keyup", debounce(applyFilters, 300));
+    theme.addEventListener("change", applyFilters);
+    order.addEventListener("change", applyFilters);
+    more.addEventListener("click", ()=>load(false));
+    reset.addEventListener("click", ()=>{ q.value=""; theme.value=""; order.value="new"; applyFilters(); });
+
+    // Premier chargement
+    applyFilters();
+
+    async function applyFilters(){
+      // Reset état et vue
+      state.q = (q.value||"").trim();
+      state.theme = theme.value;
+      state.order = order.value;
+      state.offset = 0;
+      state.currentOwnerId = null;
+      feed.innerHTML = "";
+      empty.style.display = "none";
+      err.textContent = "";
+      reset.style.display = (state.q || state.theme || state.order!=="new") ? "inline-block" : "none";
+
+      // Recherche par @username ?
+      if (state.q.startsWith("@")) {
+        const username = state.q.slice(1).trim();
+        if (username) {
+          const { data: p, error: pe } = await sb.from("profiles").select("id").eq("username", username).maybeSingle();
+          if (pe) { err.textContent = pe.message; return; }
+          state.currentOwnerId = p?.id || "__no_user__"; // drapeau si inexistant
+        }
+      }
+
+      await load(true);
+    }
+
+    async function load(firstPage){
+      if (state.loading) return;
+      state.loading = true;
+      more.disabled = true;
+
+      let q = sb.from("characters").select("id,owner,name,theme,created_at,age,race,affiliation,magic,strength", { count: "exact" })
+        .eq("published", true);
+
+      // Filtres
+      if (state.currentOwnerId === "__no_user__") {
+        // rien ne correspond → liste vide immédiate
+        renderBatch([], true);
+        state.loading = false;
+        return;
+      }
+      if (state.currentOwnerId) q = q.eq("owner", state.currentOwnerId);
+      else if (state.q && !state.q.startsWith("@")) q = q.ilike("name", `%${state.q}%`);
+
+      if (state.theme) q = q.eq("theme", state.theme);
+
+      // Tri
+      if (state.order === "new") q = q.order("created_at", { ascending:false });
+      if (state.order === "old") q = q.order("created_at", { ascending:true });
+      if (state.order === "name") q = q.order("name", { ascending:true });
+
+      // Pagination
+      q = q.range(state.offset, state.offset + PAGE_SIZE - 1);
+
+      const { data: chars, error: cErr } = await q;
+      if (cErr) { err.textContent = cErr.message; state.loading=false; return; }
+
+      // Récupérer les usernames des owners en un seul appel
+      const owners = uniq(chars.map(x=>x.owner));
+      let usersById = {};
+      if (owners.length){
+        const { data: profs, error: pErr } = await sb.from("profiles").select("id,username").in("id", owners);
+        if (pErr) { err.textContent = pErr.message; state.loading=false; return; }
+        usersById = Object.fromEntries((profs||[]).map(p=>[p.id, p]));
+      }
+
+      // Fusion et rendu
+      const enriched = chars.map(c => ({ ...c, owner_username: usersById[c.owner]?.username || null }));
+      renderBatch(enriched, firstPage);
+
+      state.lastBatchCount = chars.length;
+      state.offset += chars.length;
+      more.style.display = (chars.length === PAGE_SIZE) ? "inline-block" : "none";
+      more.disabled = false;
+      state.loading = false;
+    }
+
+    function renderBatch(items, firstPage){
+      if (firstPage && items.length===0){
+        empty.style.display = "block";
+        feed.innerHTML = "";
+        more.style.display = "none";
+        return;
+      }
+      if (!items.length) return;
+
+      const html = items.map(c => `
+        <a class="card" href="character.html?id=${c.id}">
+          <div class="hd">
+            <div class="title">${escapeHTML(c.name)}</div>
+            <div class="meta">${new Date(c.created_at).toLocaleString()} • ${escapeHTML(c.theme)}${c.owner_username ? ` • par @${escapeHTML(c.owner_username)}` : ""}</div>
+          </div>
+          <div class="body">
+            <div class="row"><div class="meta">Race</div><div>${escapeHTML(c.race||"—")}</div></div>
+            <div class="row"><div class="meta">Affiliation</div><div>${escapeHTML(c.affiliation||"—")}</div></div>
+            <div class="row"><div class="meta">Magie</div><div>${escapeHTML(c.magic||"—")}</div></div>
+            <div class="row"><div class="meta">Force</div><div>${escapeHTML(c.strength||"—")}</div></div>
+          </div>
+        </a>
+      `).join("");
+
+      feed.insertAdjacentHTML("beforeend", html);
+    }
+
+    // Utils
+    function uniq(arr){ return [...new Set(arr.filter(Boolean))]; }
+    function escapeHTML(s){ return (s||"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;","&gt;":"&gt;","\"":"&quot;","'":"&#039;" }[m])); }
+    function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
+  })();
+  </script>
+</body>
+</html>
