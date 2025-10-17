@@ -1,9 +1,10 @@
 // js/nav.js
-// Injecte un menu en haut de la page et le personnalise selon la session
+// Barre de navigation dynamique + masque l'ancienne barre .nav des pages legacy
 
 (function () {
+  // 1) Style du nouveau menu
   const css = `
-  .rz-topbar{position:sticky;top:0;z-index:999;backdrop-filter:saturate(140%) blur(8px);
+  .rz-topbar{position:sticky;top:0;z-index:9999;backdrop-filter:saturate(140%) blur(8px);
     background:rgba(10,12,22,.55);border-bottom:1px solid rgba(255,255,255,.08)}
   .rz-wrap{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
   .rz-brand{font-weight:800;letter-spacing:.3px}
@@ -21,13 +22,13 @@
   style.textContent = css;
   document.head.appendChild(style);
 
-  // construit le HTML du menu (sans état)
+  // 2) HTML de la barre
   function baseHTML() {
     return `
     <div class="rz-topbar">
       <div class="rz-wrap">
         <div class="rz-brand"><a class="rz-link" href="explore.html">Re:Zero</a></div>
-        <nav class="rz-nav" id="rz-nav">
+        <nav class="rz-nav">
           <a class="rz-link" data-page="index.html" href="index.html">Subaru</a>
           <a class="rz-link" data-page="emilia.html" href="emilia.html">Emilia</a>
           <a class="rz-link" data-page="rem.html" href="rem.html">Rem</a>
@@ -39,6 +40,7 @@
     </div>`;
   }
 
+  // 3) Surligner la page courante
   function setActive() {
     const path = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
     document.querySelectorAll('.rz-link[data-page]').forEach(a => {
@@ -46,15 +48,12 @@
     });
   }
 
+  // 4) État connecté/déconnecté
   async function renderAuth() {
-    // sb et helpers viennent de js/config.js
-    let html = `
-      <a class="rz-link" data-page="login.html" href="login.html">Se connecter</a>
-    `;
+    let html = `<a class="rz-link" data-page="login.html" href="login.html">Se connecter</a>`;
     try {
       const user = await (window.getUser ? getUser() : null);
       if (user) {
-        // profil public si username
         let userHtml = '';
         try {
           const { data: [p] } = await sb.from('profiles').select('username,display_name,avatar_url').eq('id', user.id);
@@ -84,19 +83,25 @@
         }
         html = userHtml;
       }
-    } catch (e) {
-      // en cas d'erreur, laisser le lien "Se connecter"
-    }
+    } catch (e) {}
     const slot = document.getElementById('rz-auth');
     if (slot) slot.innerHTML = html;
     const lg = document.getElementById('rz-logout');
     if (lg) lg.addEventListener('click', async ()=>{ try { await sb.auth.signOut(); } finally { location.href = 'login.html'; } });
   }
 
-  // Injection: on place la barre tout en haut du body
-  const wrap = document.createElement('div');
-  wrap.innerHTML = baseHTML();
-  document.body.prepend(wrap.firstElementChild);
+  // 5) Injecter la nouvelle barre tout en haut
+  const host = document.createElement('div');
+  host.innerHTML = baseHTML();
+  document.body.prepend(host.firstElementChild);
+
+  // 6) MASQUER l’ancienne barre si présente (pages index/emilia/rem)
+  const old = document.querySelector('.nav');
+  if (old) old.style.setProperty('display','none','important');
+
+  // 7) Éviter que le contenu passe sous la barre existante des anciennes pages
+  // (Certaines pages avaient des marges liées à l’ancienne .nav fixe.)
+  document.body.style.scrollMarginTop = '64px';
 
   setActive();
   renderAuth();
